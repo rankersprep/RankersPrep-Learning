@@ -21,11 +21,13 @@
 
     <View
         android:id="@+id/rectangle_9"
-        android:layout_width="343dp"
-        android:layout_height="529dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/signinrectangle"
         android:elevation="35dp"
@@ -80,20 +82,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/userID" />
 
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:elevation="40dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Forgot Password"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:textColor="#000000"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.831"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/password" />
+
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:elevation="40dp"
+        android:fontFamily="@font/montserrat"
+        android:text="or"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sign_in_button" />
+
     <EditText
         android:id="@+id/userID"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="36dp"
+
+        android:layout_marginEnd="55dp"
+
         android:background="@drawable/rounded_edittext"
-
         android:elevation="35dp"
-
+        android:fontFamily="@font/montserrat"
         android:includeFontPadding="true"
         android:paddingLeft="16dp"
-        android:paddingRight="10dp"
+        android:paddingRight="16dp"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,18 +155,24 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="55dp"
+
         android:layout_marginTop="36dp"
 
+        android:layout_marginEnd="55dp"
         android:background="@drawable/rounded_edittext"
-
         android:elevation="35dp"
+        android:fontFamily="@font/montserrat"
         android:includeFontPadding="true"
         android:paddingLeft="16dp"
-        android:paddingRight="10dp"
+        android:paddingRight="50dp"
+        android:password="true"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/color_cursor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -141,11 +186,51 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="10dp"
         android:background="@drawable/show_pass_icon"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:contextClickable="false"
         android:elevation="42dp"
         app:layout_constraintBottom_toBottomOf="@id/password"
         app:layout_constraintEnd_toEndOf="@id/password"
         app:layout_constraintTop_toTopOf="@id/password"
         app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/sign_in_button"
+        android:layout_width="255dp"
+        android:layout_height="73dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="105dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:foreground="@drawable/sign_in_button"
+        android:translationZ="36dp"
+        app:layout_constraintBottom_toBottomOf="@id/rectangle_9"
+        app:layout_constraintEnd_toEndOf="@id/password"
+        app:layout_constraintHorizontal_bias="0.531"
+        app:layout_constraintStart_toStartOf="@id/password" />
+
+    <TextView
+        android:id="@+id/register"
+        android:layout_width="180dp"
+        android:layout_height="38dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_edittext"
+        android:clickable="true"
+        android:elevation="36dp"
+        android:fontFamily="@font/montserrat"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="Register as Mentor"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/or" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.rankersprep.rankerspreplearning;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -12,6 +13,11 @@ import android.view.animation.Animation;
 public class MainActivity extends AppCompatActivity {
     boolean b = true;
 
+    public void register(View view){
+        Intent intent = new Intent(this,RegisterUser.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         View view = findViewById(R.id.logoMain);
 
-
+        //Animation at start
         CountDownTimer countDownTimer = new CountDownTimer(2000,200) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -42,4 +48,5 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
     }
+
 }

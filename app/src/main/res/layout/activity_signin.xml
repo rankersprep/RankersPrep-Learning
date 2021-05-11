@@ -32,10 +32,10 @@
             android:layout_height="0dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="154dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="140dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/signinrectangle"
             android:elevation="35dp"
             android:outlineProvider="bounds"
@@ -75,21 +75,6 @@
             app:layout_constraintTop_toBottomOf="@+id/sign_in" />
 
         <TextView
-            android:id="@+id/passTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:elevation="40dp"
-            android:fontFamily="@font/montserrat"
-            android:text="Password"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.163"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/userID" />
-
-        <TextView
             android:id="@+id/forgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,15 +109,17 @@
             app:layout_constraintTop_toTopOf="@id/sign_in_button" />
 
         <EditText
-            android:id="@+id/userID"
+            android:id="@+id/emailID"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="36dp"
+            android:layout_marginEnd="50dp"
 
-            android:layout_marginEnd="55dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
 
             android:background="@drawable/rounded_edittext"
             android:elevation="35dp"
@@ -158,9 +145,24 @@
             android:textColor="#000000"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.154"
+            app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/line_1" />
+
+        <TextView
+            android:id="@+id/passTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:elevation="40dp"
+            android:fontFamily="@font/montserrat"
+            android:text="Password"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.175"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/emailID" />
 
         <EditText
             android:id="@+id/password"
@@ -168,11 +170,11 @@
             android:layout_height="48dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="50dp"
 
             android:layout_marginTop="36dp"
 
-            android:layout_marginEnd="55dp"
+            android:layout_marginEnd="50dp"
             android:background="@drawable/rounded_edittext"
             android:elevation="35dp"
             android:fontFamily="@font/montserrat"
@@ -233,6 +235,7 @@
             android:fontFamily="@font/montserrat"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
+            android:onClick="register"
             android:text="Register as Mentor"
             android:textColor="#000000"
             android:textSize="16sp"
@@ -240,6 +243,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/or" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

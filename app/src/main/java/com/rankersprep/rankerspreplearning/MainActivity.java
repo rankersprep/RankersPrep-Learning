@@ -18,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void signIn(View view){
+        Intent intent = new Intent(this,AdminActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -12,7 +12,7 @@
         android:layout_width="175dp"
         android:layout_height="175dp"
         android:layout_marginTop="65dp"
-        android:src="@drawable/mentor_image"
+        android:src="@drawable/sagar_pic"
         app:civ_border_color="#FFFFFF"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"

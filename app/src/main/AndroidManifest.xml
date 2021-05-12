@@ -12,10 +12,13 @@
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
             android:name=".AdminActivity"
-            android:label="@string/title_activity_admin"></activity>
+            android:label="@string/title_activity_admin"
+            android:screenOrientation="portrait"
+            android:theme="@style/RankersTheme"/>
         <activity
             android:name=".RegisterUser"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/DemoTheme" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"

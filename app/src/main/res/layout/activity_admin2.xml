@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         app:itemBackground="@color/white"
-        app:itemIconSize="35dp"
+        app:itemIconSize="28dp"
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:layout_constraintHorizontal_bias="0.0"

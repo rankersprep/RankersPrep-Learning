@@ -136,6 +136,38 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="25dp"
                     android:fontFamily="@font/montserrat"
+                    android:text="Password"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+
+                    android:background="@drawable/rounded_edittext"
+                    android:ems="10"
+
+                    android:fontFamily="@font/montserrat"
+                    android:includeFontPadding="true"
+                    android:inputType="textPassword"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/color_cursor" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/montserrat"
                     android:text="Contact Number"
                     android:textColor="#000000"
                     android:textSize="16sp"
@@ -153,6 +185,8 @@
                     android:background="@drawable/rounded_edittext"
                     android:fontFamily="@font/montserrat"
                     android:includeFontPadding="true"
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:phoneNumber="true"
@@ -187,9 +221,11 @@
                         android:fontFamily="@font/montserrat"
                         android:gravity="center"
                         android:includeFontPadding="true"
+                        android:onClick="setExpertCheck"
                         android:paddingLeft="30dp"
                         android:paddingRight="30dp"
                         android:singleLine="true"
+                        android:tag="0"
                         android:text="JEE Mains"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -205,9 +241,11 @@
                         android:fontFamily="@font/montserrat"
                         android:gravity="center"
                         android:includeFontPadding="true"
+                        android:onClick="setExpertCheck"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:singleLine="true"
+                        android:tag="1"
                         android:text="JEE (Mains + Advance)"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -223,9 +261,11 @@
                         android:fontFamily="@font/montserrat"
                         android:gravity="center"
                         android:includeFontPadding="true"
+                        android:onClick="setExpertCheck"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:singleLine="true"
+                        android:tag="2"
                         android:text="NEET"
                         android:textColor="#000000"
                         android:textSize="16sp" />
@@ -307,6 +347,7 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="10dp"
 
                     android:background="@drawable/rounded_edittext"
                     android:fontFamily="@font/montserrat"
@@ -334,6 +375,7 @@
             android:fontFamily="@font/montserrat"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
+            android:onClick="registerUser"
             android:text="Submit"
             android:textColor="#FFFFFF"
             android:textSize="20sp"

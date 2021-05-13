@@ -10,8 +10,13 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.rankersprep.rankerspreplearning.databinding.ActivityRegisterUserBinding;
+import com.rankersprep.rankerspreplearning.databinding.ActivitySigninBinding;
+
 public class MainActivity extends AppCompatActivity {
     boolean b = true;
+
+    ActivitySigninBinding binding;
 
     public void register(View view){
         Intent intent = new Intent(this,RegisterUser.class);
@@ -26,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signin);
+        binding = ActivitySigninBinding.inflate(getLayoutInflater());
+        View view2 = binding.getRoot();
+        setContentView(view2);
 
         View view = findViewById(R.id.logoMain);
 

@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="cursor">#5F5F5F</color>
     <color name="themeColor">#0040FF</color>
+    <color name="background">#FAFAFA</color>
 </resources>

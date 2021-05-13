@@ -1,7 +1,9 @@
 package com.rankersprep.rankerspreplearning;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,9 +21,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class AdminActivity extends AppCompatActivity {
 
-    public void changeTheme(){
-        setTheme(R.style.DemoTheme);
-    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

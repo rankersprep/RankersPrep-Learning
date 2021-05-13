@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "819225292479",
+    "project_id": "rankersprep-learning",
+    "storage_bucket": "rankersprep-learning.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819225292479:android:553d87d966dca00d9a200a",
+        "android_client_info": {
+          "package_name": "com.rankersprep.rankerspreplearning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819225292479-fr4sgsumh7tsq0srvcigf2rugv5ek6ri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rankersprep.rankerspreplearning",
+            "certificate_hash": "d758e7d76fe8b17902480737d80fdbdfa0ce8211"
+          }
+        },
+        {
+          "client_id": "819225292479-rg11ulg3r6pvgai3ofqi23obudoeh9sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuQ_qNr69HXiT-8dWY3D3zq2gc-7NVlAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819225292479-rg11ulg3r6pvgai3ofqi23obudoeh9sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

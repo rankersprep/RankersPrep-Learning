@@ -49,6 +49,7 @@
                 android:clickable="true"
                 android:elevation="10dp"
                 android:foreground="?attr/selectableItemBackground"
+                android:onClick="createAnnouncement"
                 android:outlineProvider="background">
 
                 <View
@@ -89,7 +90,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mentors"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="190dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="30dp"
@@ -140,7 +141,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mentees"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="190dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginRight="30dp"

@@ -1,20 +1,38 @@
 package com.rankersprep.rankerspreplearning;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rankersprep.rankerspreplearning.databinding.ActivityRegisterUserBinding;
 import com.rankersprep.rankerspreplearning.databinding.ActivitySigninBinding;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MainActivity extends AppCompatActivity {
     boolean b = true;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     ActivitySigninBinding binding;
 
@@ -24,8 +42,87 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void signIn(View view){
-        Intent intent = new Intent(this,AdminActivity.class);
-        startActivity(intent);
+        String email = binding.emailID.getText().toString();
+        String password = binding.password.getText().toString();
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("loggingIn", "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+//                            mDatabase.child("users").child(user.getUid()).child("approval").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+//                                    String approval = task.getResult().getValue().toString();
+//                                    if(!approval.matches("approved")){
+//                                        Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
+//                                        FirebaseAuth.getInstance().signOut();
+//                                    }else{
+//                                        mDatabase.child("users").child(user.getUid()).child("role").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+//                                                String role = task.getResult().getValue().toString();
+//                                                if(role.matches("admin")){
+//                                                    Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+//                                                    startActivity(intent);
+//                                                }else if(role.matches("mentor")){
+//                                                    //Mentor Activity
+//                                                }
+//                                            }
+//                                        });
+//
+//                                    }
+//                                }
+//                            });
+                            mDatabase.child("users").child(user.getUid()).addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+                                    String approval = snapshot.child("approval").getValue().toString();
+                                    String role = snapshot.child("role").getValue().toString();
+                                    if(approval.matches("approved")){
+                                        if(role.matches("admin")){
+                                            Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+                                            startActivity(intent);
+                                        }else if(role.matches("mentor")){
+                                            //Mentor Activity
+                                        }
+                                    }else{
+                                        Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
+                                        FirebaseAuth.getInstance().signOut();
+                                    }
+                                }
+
+                                @Override
+                                public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+                                }
+
+                                @Override
+                                public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+
+                                }
+
+                                @Override
+                                public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                                }
+                            });
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("loggingIn", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
     }
 
     @Override
@@ -59,6 +156,15 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }.start();
+        }
+
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            Intent intent = new Intent(this,AdminActivity.class);
+            startActivity(intent);
         }
 
     }

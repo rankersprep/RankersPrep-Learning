@@ -78,6 +78,7 @@ public class RegisterUser extends AppCompatActivity {
                                 mDatabase.child("users").child(userId).child("language").setValue(language);
                                 mDatabase.child("users").child(userId).child("approval").setValue("pending");
                                 mDatabase.child("users").child(userId).child("role").setValue("mentor");
+                                mDatabase.child("users").child(userId).child("expertIn").setValue(expertIn);
 
                                 FirebaseAuth.getInstance().signOut();
 

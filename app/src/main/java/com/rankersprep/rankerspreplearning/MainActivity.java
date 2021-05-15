@@ -29,6 +29,8 @@ import com.rankersprep.rankerspreplearning.databinding.ActivitySigninBinding;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CountDownLatch;
+
 public class MainActivity extends AppCompatActivity {
     boolean b = true;
     private FirebaseAuth mAuth;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     public void signIn(View view){
         String email = binding.emailID.getText().toString();
         String password = binding.password.getText().toString();
+        binding.CL1.setVisibility(View.INVISIBLE);
+        binding.loading.setVisibility(View.VISIBLE);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -52,72 +56,67 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("loggingIn", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            mDatabase.child("users").child(user.getUid()).child("approval").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                            mDatabase.child("users").child(user.getUid()).child("approval").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                    try{
+                                        String approval = task.getResult().getValue().toString();
+                                        if (!approval.matches("approved")) {
+                                            Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
+                                            FirebaseAuth.getInstance().signOut();
+                                        } else {
+                                            mDatabase.child("users").child(user.getUid()).child("role").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                    String role = task.getResult().getValue().toString();
+                                                    if (role.matches("admin")) {
+                                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                                        startActivity(intent);
+                                                    } else if (role.matches("mentor")) {
+                                                        //Mentor Activity
+                                                    }
+                                                }
+                                            });
+
+                                        }
+                                    }catch (Exception e){
+                                        Log.w("loggingIn", "signInWithEmail:failure", e);
+                                        Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                        binding.CL1.setVisibility(View.VISIBLE);
+                                        binding.loading.setVisibility(View.INVISIBLE);
+                                    }
+                                }
+                            });
+//                            mDatabase.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 //                                @Override
 //                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-//                                    String approval = task.getResult().getValue().toString();
-//                                    if(!approval.matches("approved")){
-//                                        Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
-//                                        FirebaseAuth.getInstance().signOut();
-//                                    }else{
-//                                        mDatabase.child("users").child(user.getUid()).child("role").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-//                                                String role = task.getResult().getValue().toString();
-//                                                if(role.matches("admin")){
-//                                                    Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
-//                                                    startActivity(intent);
-//                                                }else if(role.matches("mentor")){
-//                                                    //Mentor Activity
-//                                                }
+//                                    DataSnapshot snapshot= task.getResult();
+//                                    if(snapshot!=null){
+//                                        DataSnapshot snapshot1 = snapshot.child("approval");
+//                                        String approval = (String)snapshot1.getValue();
+//                                        String role = (String)snapshot.child("role").getValue();
+//                                        if(approval.matches("approved")){
+//                                            if(role.matches("admin")){
+//                                                Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
+//                                                startActivity(intent);
+//                                            }else if(role.matches("mentor")){
+//                                                //Mentor Activity
 //                                            }
-//                                        });
-//
+//                                        }else{
+//                                            Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
+//                                            FirebaseAuth.getInstance().signOut();
+//                                        }
 //                                    }
 //                                }
 //                            });
-                            mDatabase.child("users").child(user.getUid()).addChildEventListener(new ChildEventListener() {
-                                @Override
-                                public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-                                    String approval = snapshot.child("approval").getValue().toString();
-                                    String role = snapshot.child("role").getValue().toString();
-                                    if(approval.matches("approved")){
-                                        if(role.matches("admin")){
-                                            Intent intent = new Intent(getApplicationContext(),AdminActivity.class);
-                                            startActivity(intent);
-                                        }else if(role.matches("mentor")){
-                                            //Mentor Activity
-                                        }
-                                    }else{
-                                        Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
-                                        FirebaseAuth.getInstance().signOut();
-                                    }
-                                }
 
-                                @Override
-                                public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
 
-                                }
-
-                                @Override
-                                public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
-
-                                }
-
-                                @Override
-                                public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-                                }
-                            });
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("loggingIn", "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            binding.CL1.setVisibility(View.VISIBLE);
+                            binding.loading.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -163,8 +162,19 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(this,AdminActivity.class);
-            startActivity(intent);
+
+            CountDownTimer countDownTimer = new CountDownTimer(2000,2500) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+
+                @Override
+                public void onFinish() {
+                    Intent intent = new Intent(MainActivity.this,AdminActivity.class);
+                    startActivity(intent);
+                }
+            }.start();
         }
 
     }

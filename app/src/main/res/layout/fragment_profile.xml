@@ -109,6 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <RelativeLayout
+        android:id="@+id/quote1"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_alignParentLeft="true"
@@ -117,11 +118,11 @@
         android:layout_marginEnd="12dp"
         android:background="@drawable/quote_open"
         android:outlineProvider="background"
-        app:layout_constraintEnd_toStartOf="@+id/lorem_ipsum"
+        app:layout_constraintEnd_toStartOf="@+id/loremIpsum"
         app:layout_constraintTop_toTopOf="@id/linkedIn" />
 
     <TextView
-        android:id="@+id/lorem_ipsum"
+        android:id="@+id/loremIpsum"
         android:layout_width="259dp"
         android:layout_height="93dp"
         android:layout_alignParentLeft="true"
@@ -129,7 +130,7 @@
         android:layout_marginTop="55dp"
 
         android:fontFamily="@font/montserrat"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Orci adipiscing diam sed volutpat."
+        android:text="It's our choices that say who we truly are far more than our abilities."
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -139,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linkedIn" />
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/quote2"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_alignParentLeft="true"
@@ -148,7 +149,7 @@
         android:layout_marginTop="125dp"
         android:background="@drawable/quote_close"
         android:outlineProvider="background"
-        app:layout_constraintStart_toEndOf="@+id/lorem_ipsum"
+        app:layout_constraintStart_toEndOf="@+id/loremIpsum"
         app:layout_constraintTop_toBottomOf="@id/linkedIn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -156,7 +157,7 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/create_an_announcement"
         android:clickable="true"
@@ -165,7 +166,7 @@
         android:outlineProvider="background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+        app:layout_constraintTop_toBottomOf="@+id/quote2">
 
         <View
             android:id="@+id/megaphone_1"
@@ -200,6 +201,71 @@
             app:layout_constraintVertical_bias="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/logOut"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/submit_register_user"
+        android:clickable="true"
+        android:fontFamily="@font/montserrat"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="Log Out"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/previousAnnouncements" />
+
+    <EditText
+        android:id="@+id/editQuote"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="40dp"
+
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/border_rounded"
+        android:fontFamily="@font/montserrat"
+        android:gravity="top|left"
+        android:includeFontPadding="true"
+        android:paddingLeft="12dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="#000000"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linkedIn" />
+
+    <TextView
+        android:id="@+id/doneTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="25dp"
+        android:clickable="true"
+        android:fontFamily="@font/montserrat"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Done"
+        android:textColor="#0040FF"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

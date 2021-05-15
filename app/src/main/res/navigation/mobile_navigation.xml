@@ -22,4 +22,16 @@
         android:name="com.rankersprep.rankerspreplearning.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/mentorsFragment"
+        android:name="com.rankersprep.rankerspreplearning.MentorListFragment"
+        android:label="Mentors"
+        tools:layout="@layout/fragment_mentor_list" />
+
+    <fragment
+        android:id="@+id/menteesFragment"
+        android:name="com.rankersprep.rankerspreplearning.MenteeListFragment"
+        android:label="Mentees"
+        tools:layout="@layout/fragment_mentor_list" />
 </navigation>

@@ -49,7 +49,6 @@
                 android:clickable="true"
                 android:elevation="10dp"
                 android:foreground="?attr/selectableItemBackground"
-                android:onClick="createAnnouncement"
                 android:outlineProvider="background">
 
                 <View

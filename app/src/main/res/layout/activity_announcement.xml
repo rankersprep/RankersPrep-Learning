@@ -45,6 +45,7 @@
         android:layout_marginEnd="40dp"
 
         android:background="@drawable/border_rounded"
+        android:capitalize="sentences"
         android:fontFamily="@font/montserrat"
         android:includeFontPadding="true"
         android:paddingLeft="16dp"
@@ -96,6 +97,7 @@
 
         android:layout_marginEnd="40dp"
         android:background="@drawable/border_rounded"
+        android:capitalize="sentences"
         android:fontFamily="@font/montserrat"
         android:gravity="top|left"
         android:includeFontPadding="true"
@@ -184,6 +186,7 @@
         android:fontFamily="@font/montserrat"
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center"
+        android:onClick="sendAnnouncement"
         android:text="Send"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

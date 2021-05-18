@@ -2,7 +2,8 @@
     android:width="30dp"
     android:height="30dp"
     android:viewportWidth="30"
-    android:viewportHeight="30">
+    android:viewportHeight="30"
+    >
     <group>
         <path
             android:fillColor="#000"

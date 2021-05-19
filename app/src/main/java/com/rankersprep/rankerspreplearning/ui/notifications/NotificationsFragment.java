@@ -1,28 +1,19 @@
 package com.rankersprep.rankerspreplearning.ui.notifications;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.rankersprep.rankerspreplearning.AdminActivity;
 import com.rankersprep.rankerspreplearning.R;
 import com.rankersprep.rankerspreplearning.databinding.FragmentNotificationsBinding;
-import com.rankersprep.rankerspreplearning.ui.profile.UpcomingPaymentFragment;
 
 import org.jetbrains.annotations.NotNull;
 

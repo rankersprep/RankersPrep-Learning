@@ -48,6 +48,7 @@ public class MentorListFragment extends Fragment {
         root.setSystemUiVisibility(root.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         FirebaseDatabase.getInstance().goOnline();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.keepSynced(true);
 
         mentorNames = new ArrayList<String>();
         expertIn = new ArrayList<String>();
@@ -70,8 +71,8 @@ public class MentorListFragment extends Fragment {
                 uids.add(snapshot.getKey());
                 mentorNames.add(snapshot.child("name").getValue().toString());
                 expertIn.add(snapshot.child("expertIn").getValue().toString());
-                if(snapshot.hasChild("noOfMentees")){
-                    noMentees.add("Mentees: "+snapshot.child("noOfMentees").getValue().toString());
+                if(snapshot.hasChild("mentees")){
+                    noMentees.add("Mentees: "+snapshot.child("mentees").getChildrenCount());
                 }else{
                     noMentees.add("Mentees: "+"0");
                 }

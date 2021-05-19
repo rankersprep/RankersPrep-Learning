@@ -1,4 +1,4 @@
-package com.rankersprep.rankerspreplearning.ui.profile;
+package com.rankersprep.rankerspreplearning.ui.notifications;
 
 import android.os.Bundle;
 

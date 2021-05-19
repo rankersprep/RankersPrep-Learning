@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 
 public class AddMenteeFragment extends Fragment {
@@ -34,6 +37,10 @@ public class AddMenteeFragment extends Fragment {
     FragmentAddMenteeBinding binding;
     private DatabaseReference mDatabase;
     ArrayList<String> mentorNames,mentorUIDs;
+    String slot;
+    String months;
+    int startMonth,endMonth;
+    String nextPaymentMonth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,6 +115,14 @@ public class AddMenteeFragment extends Fragment {
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                         binding.startDate.setText(sdf.format(myCalendar.getTime()));
+                        if(dayOfMonth<16){
+                            slot = "2";
+                            nextPaymentMonth = String.valueOf(month+1);
+                        }else{
+                            slot="1";
+                            nextPaymentMonth = String.valueOf(month+2);
+                        }
+                        startMonth=month;
                     }
                 },year,month,day);
                 datePickerDialog.show();
@@ -127,9 +142,72 @@ public class AddMenteeFragment extends Fragment {
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                         binding.endDate.setText(sdf.format(myCalendar.getTime()));
+                        endMonth=month;
                     }
                 },year,month,day);
                 datePickerDialog.show();
+            }
+        });
+
+        binding.addMentee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name,email,contact,plan, exam, startDate, endDate, mentor, salary, note;
+                name = binding.nameEditTextMentee.getText().toString();
+                email = binding.emailEditTextMentee.getText().toString();
+                contact = binding.numberEditTextMentee.getText().toString();
+                plan = binding.planNameEditText.getText().toString();
+                exam = binding.targetExamEditText.getText().toString();
+                startDate = binding.startDate.getText().toString();
+                endDate = binding.endDate.getText().toString();
+                mentor = binding.mentorAssignedEditText.getText().toString();
+                salary = binding.salaryEditText.getText().toString();
+                note = binding.noteEditText.getText().toString();
+                if(!name.matches("") && !email.matches("") && contact.length()==10 && !plan.matches("") && !exam.matches("") && !startDate.matches("") && !endDate.matches("") && !mentor.matches("") && !salary.matches("")  && !note.matches("")){
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("name",name);
+                    map.put("email",email);
+                    map.put("contact",contact);
+                    map.put("plan",plan);
+                    map.put("exam",exam);
+                    map.put("startDate",startDate);
+                    map.put("endDate",endDate);
+                    map.put("mentor",mentor);
+                    map.put("salary",salary);
+                    map.put("note",note);
+                    String mentoruid = mentorUIDs.get(mentorNames.indexOf(mentor));
+                    if(endMonth-startMonth!=0){
+                        months = String.valueOf(endMonth-startMonth);
+                    }else{
+                        months = "1";
+                    }
+                    map.put("mentorUID",mentoruid);
+                    String menteeUID = mentors.child(mentoruid).child("mentees").push().getKey();
+                    HashMap<String,Object> map1 = new HashMap<>();
+                    map1.put("name",name);
+                    map1.put("salary",salary);
+                    map1.put("slot",slot);
+                    map1.put("monthsRemaining",months);
+                    map1.put("startDate", startDate);
+                    map1.put("nextPaymentMonth",nextPaymentMonth);
+                    map1.put("startMonth",String.valueOf(startMonth));
+                    mentors.child(mentoruid).child("mentees").child(menteeUID).updateChildren(map1);
+
+                    mDatabase.child("mentees").child(menteeUID).updateChildren(map, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable @org.jetbrains.annotations.Nullable DatabaseError error, @NonNull @NotNull DatabaseReference ref) {
+                            Toast.makeText(getActivity(), "Mentee Added", Toast.LENGTH_SHORT).show();
+                            MenteeListFragment nextFrag= new MenteeListFragment();
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
+                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                            transaction.commit();
+                        }
+                    });
+
+                }else{
+                    Toast.makeText(getActivity(), "Fill all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

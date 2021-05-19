@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.ContactsContract;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     ActivitySigninBinding binding;
+    boolean showpass=false;
 
     public void register(View view){
         Intent intent = new Intent(this,RegisterUser.class);
@@ -46,47 +49,50 @@ public class MainActivity extends AppCompatActivity {
     public void signIn(View view){
         String email = binding.emailID.getText().toString();
         String password = binding.password.getText().toString();
-        binding.CL1.setVisibility(View.INVISIBLE);
-        binding.loading.setVisibility(View.VISIBLE);
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("loggingIn", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            mDatabase.child("users").child(user.getUid()).child("approval").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                    try{
-                                        String approval = task.getResult().getValue().toString();
-                                        if (!approval.matches("approved")) {
-                                            Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
-                                            FirebaseAuth.getInstance().signOut();
-                                        } else {
-                                            mDatabase.child("users").child(user.getUid()).child("role").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                                                    String role = task.getResult().getValue().toString();
-                                                    if (role.matches("admin")) {
-                                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                                        startActivity(intent);
-                                                    } else if (role.matches("mentor")) {
-                                                        //Mentor Activity
+        try {
+            binding.CL1.setVisibility(View.INVISIBLE);
+            binding.loading.setVisibility(View.VISIBLE);
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("loggingIn", "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                mDatabase.child("users").child(user.getUid()).child("approval").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                        try {
+                                            String approval = task.getResult().getValue().toString();
+                                            if (!approval.matches("approved")) {
+                                                Toast.makeText(MainActivity.this, "Account not Approved", Toast.LENGTH_SHORT).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                                binding.CL1.setVisibility(View.VISIBLE);
+                                                binding.loading.setVisibility(View.INVISIBLE);
+                                            } else {
+                                                mDatabase.child("users").child(user.getUid()).child("role").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                        String role = task.getResult().getValue().toString();
+                                                        if (role.matches("admin")) {
+                                                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                                            startActivity(intent);
+                                                        } else if (role.matches("mentor")) {
+                                                            //Mentor Activity
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
 
+                                            }
+                                        } catch (Exception e) {
+                                            Log.w("loggingIn", "signInWithEmail:failure", e);
+                                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                            binding.CL1.setVisibility(View.VISIBLE);
+                                            binding.loading.setVisibility(View.INVISIBLE);
                                         }
-                                    }catch (Exception e){
-                                        Log.w("loggingIn", "signInWithEmail:failure", e);
-                                        Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                                        binding.CL1.setVisibility(View.VISIBLE);
-                                        binding.loading.setVisibility(View.INVISIBLE);
                                     }
-                                }
-                            });
+                                });
 //                            mDatabase.child("users").child(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
 //                                @Override
 //                                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
@@ -111,15 +117,20 @@ public class MainActivity extends AppCompatActivity {
 //                            });
 
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("loggingIn", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            binding.CL1.setVisibility(View.VISIBLE);
-                            binding.loading.setVisibility(View.INVISIBLE);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("loggingIn", "signInWithEmail:failure", task.getException());
+                                Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                binding.CL1.setVisibility(View.VISIBLE);
+                                binding.loading.setVisibility(View.INVISIBLE);
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            Toast.makeText(this, "Enter email and password", Toast.LENGTH_SHORT).show();
+            binding.CL1.setVisibility(View.VISIBLE);
+            binding.loading.setVisibility(View.INVISIBLE);
+        }
 
 
     }
@@ -176,6 +187,45 @@ public class MainActivity extends AppCompatActivity {
                 }
             }.start();
         }
+
+        binding.showPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!showpass){
+                    binding.password.setTransformationMethod(null);
+                    showpass=true;
+                    v.setBackgroundResource(R.drawable.showingpass);
+                }else{
+                    binding.password.setTransformationMethod(new PasswordTransformationMethod());
+                    showpass=false;
+                    v.setBackgroundResource(R.drawable.show_pass_icon);
+                }
+            }
+        });
+
+        binding.forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = binding.emailID.getText().toString();
+
+                try {
+
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(MainActivity.this, "Link to reset password sent on email", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "Email not yet registered", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, "Enter a valid email", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 

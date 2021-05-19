@@ -362,10 +362,13 @@
 
                 android:background="@drawable/rounded_edittext"
                 android:fontFamily="@font/montserrat"
+                android:gravity="top|left"
                 android:includeFontPadding="true"
                 android:inputType="textMultiLine"
                 android:paddingLeft="16dp"
+                android:paddingTop="10dp"
                 android:paddingRight="16dp"
+                android:paddingBottom="10dp"
                 android:textCursorDrawable="@drawable/color_cursor" />
 
             <TextView

@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,18 +112,19 @@ public class AddMenteeFragment extends Fragment {
                         Calendar myCalendar = Calendar.getInstance();
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, month);
+                        Log.i("Month", String.valueOf(month));
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                         binding.startDate.setText(sdf.format(myCalendar.getTime()));
                         if(dayOfMonth<16){
                             slot = "2";
-                            nextPaymentMonth = String.valueOf(month+1);
+                            nextPaymentMonth = String.valueOf(month+2);
                         }else{
                             slot="1";
-                            nextPaymentMonth = String.valueOf(month+2);
+                            nextPaymentMonth = String.valueOf(month+3);
                         }
-                        startMonth=month;
+                        startMonth=myCalendar.get(Calendar.MONTH)+1;
                     }
                 },year,month,day);
                 datePickerDialog.show();
@@ -142,7 +144,7 @@ public class AddMenteeFragment extends Fragment {
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                         binding.endDate.setText(sdf.format(myCalendar.getTime()));
-                        endMonth=month;
+                        endMonth=month+1;
                     }
                 },year,month,day);
                 datePickerDialog.show();

@@ -20,6 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rankersprep.rankerspreplearning.databinding.ActivityRegisterUserBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class RegisterUser extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -55,6 +58,10 @@ public class RegisterUser extends AppCompatActivity {
         String college = binding.collegeNameEditText.getText().toString();
         String language = binding.languagesEditText.getText().toString();
         String password  = binding.passwordEditText.getText().toString();
+        Calendar myCalendar = Calendar.getInstance();
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+        String date = sdf.format(myCalendar.getTime());
 
         if(!name.matches("") && !email.matches("") && !(expertIn ==null) && !contact.matches("") && !AIR.matches("") && !college.matches("") && !language.matches("")  && contact.length()==10){
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -79,6 +86,7 @@ public class RegisterUser extends AppCompatActivity {
                                 mDatabase.child("users").child(userId).child("approval").setValue("pending");
                                 mDatabase.child("users").child(userId).child("role").setValue("mentor");
                                 mDatabase.child("users").child(userId).child("expertIn").setValue(expertIn);
+                                mDatabase.child("users").child(userId).child("joinedOn").setValue(date);
 
                                 FirebaseAuth.getInstance().signOut();
 

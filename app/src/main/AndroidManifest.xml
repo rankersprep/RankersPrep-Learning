@@ -12,9 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        <activity android:name=".ui.notifications.PaymentDetailActivity"
+        <activity android:name=".PaymentHistoryDetails"
             android:screenOrientation="portrait"
             android:theme="@style/DemoTheme"/>
+        <activity
+            android:name=".ui.notifications.PaymentDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DemoTheme" />
         <activity
             android:name=".AnnouncementActivity"
             android:screenOrientation="portrait"

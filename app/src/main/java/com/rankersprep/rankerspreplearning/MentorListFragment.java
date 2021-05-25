@@ -1,5 +1,7 @@
 package com.rankersprep.rankerspreplearning;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,8 +113,46 @@ public class MentorListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getActivity(), mentorNames.get(position), Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("UID", uids.get(position));
 
+                MentorProfileFragment nextFrag= new MentorProfileFragment();
+                nextFrag.setArguments(bundle);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle("Change Approval Status")
+                            .setMessage("Select the approval status for \n"+mentorNames.get(position))
+                            .setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mDatabase.child("users").child(uids.get(position)).child("approval").setValue("approved");
+                                    approvals.set(position,"approved");
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .setNegativeButton("Pending", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mDatabase.child("users").child(uids.get(position)).child("approval").setValue("pending");
+                                    approvals.set(position,"pending");
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .show();
+
+                return true;
             }
         });
 

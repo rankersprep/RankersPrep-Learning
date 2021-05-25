@@ -166,6 +166,11 @@ public class AddMenteeFragment extends Fragment {
                 salary = binding.salaryEditText.getText().toString();
                 note = binding.noteEditText.getText().toString();
                 if(!name.matches("") && !email.matches("") && contact.length()==10 && !plan.matches("") && !exam.matches("") && !startDate.matches("") && !endDate.matches("") && !mentor.matches("") && !salary.matches("")  && !note.matches("")){
+                    if(endMonth-startMonth!=0){
+                        months = String.valueOf(endMonth-startMonth);
+                    }else{
+                        months = "1";
+                    }
                     HashMap<String,Object> map = new HashMap<>();
                     map.put("name",name);
                     map.put("email",email);
@@ -177,12 +182,10 @@ public class AddMenteeFragment extends Fragment {
                     map.put("mentor",mentor);
                     map.put("salary",salary);
                     map.put("note",note);
+                    map.put("monthsRemaining",months);
                     String mentoruid = mentorUIDs.get(mentorNames.indexOf(mentor));
-                    if(endMonth-startMonth!=0){
-                        months = String.valueOf(endMonth-startMonth);
-                    }else{
-                        months = "1";
-                    }
+
+
                     map.put("mentorUID",mentoruid);
                     String menteeUID = mentors.child(mentoruid).child("mentees").push().getKey();
                     HashMap<String,Object> map1 = new HashMap<>();

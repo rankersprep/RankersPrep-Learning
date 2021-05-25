@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,12 @@ import com.rankersprep.rankerspreplearning.databinding.FragmentMenteeListBinding
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MenteeListFragment extends Fragment {
@@ -81,7 +87,20 @@ public class MenteeListFragment extends Fragment {
                 menteeNames.add(snapshot.child("name").getValue().toString());
                 exam.add(snapshot.child("exam").getValue().toString());
                 mentorName.add("Mentor: "+snapshot.child("mentor").getValue().toString());
-                approvals.add("approved");
+                String endDate = snapshot.child("endDate").getValue().toString();
+                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date date = format.parse(endDate);
+                    Date currentDate = Calendar.getInstance().getTime();
+                    if(date.after(currentDate)){
+                        Log.i("date",date.toString()+currentDate.toString());
+                        approvals.add("pending");
+                    }else{
+                        approvals.add("approved");
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 pics.add(BitmapFactory.decodeResource(getResources(), R.drawable.sagar_pic));
                 adapter.notifyDataSetChanged();
                 binding.loading2.setVisibility(View.INVISIBLE);

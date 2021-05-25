@@ -1,5 +1,6 @@
 package com.rankersprep.rankerspreplearning.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -93,12 +95,13 @@ public class UpcomingPaymentFragment extends Fragment {
         mentorNames2 = new ArrayList<>();
         amountList2 = new ArrayList<>();
         UIDs2 = new ArrayList<>();
-        menteeNames= new ArrayList<>();
-        menteeUIDs= new ArrayList<>();
-        menteesNamesList = new ArrayList<>();
+
         menteeUIDsList = new ArrayList<>();
-        amountBreakdown = new ArrayList<>();
         amountBreakdownList = new ArrayList<>();
+        menteesNamesList = new ArrayList<>();
+
+
+
 //        amountBreakdown.add(0);
 //        menteeNames.add("");
 //        menteeUIDs.add("");
@@ -152,11 +155,13 @@ public class UpcomingPaymentFragment extends Fragment {
                 int amount=0;
                 int amount2=0;
                 if(snapshot.child("mentees").getChildrenCount()>0){
+                    menteeNames= new ArrayList<>();
+                    menteeUIDs= new ArrayList<>();
+                    amountBreakdown = new ArrayList<>();
+
                     for(DataSnapshot mentee: snapshot.child("mentees").getChildren()){
                         Log.i("mentee", mentee.toString());
-                        amountBreakdown.clear();
-                        menteeNames.clear();
-                        menteeUIDs.clear();
+
                         if(mentee.child("slot").getValue().toString().matches(slot) && Integer.parseInt(mentee.child("nextPaymentMonth").getValue().toString())==currentMonth+1){
                             amount+= Integer.parseInt(mentee.child("salary").getValue().toString());
                             if(Integer.parseInt(mentee.child("salary").getValue().toString())!=0) {
@@ -178,6 +183,7 @@ public class UpcomingPaymentFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                         upcomingPaymentBinding.loading1.setVisibility(View.INVISIBLE);
                         setListViewHeightBasedOnChildren(lv);
+
                     }
                     if(amount2>0){
                         amountList2.add(String.valueOf(amount2));
@@ -215,12 +221,14 @@ public class UpcomingPaymentFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                PaymentDetailFragment nextFrag= new PaymentDetailFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
-                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                transaction.commit();
-
+                Intent intent = new Intent(getActivity(), PaymentDetailActivity.class);
+                intent.putExtra("mentorName",mentorNames.get(position));
+                intent.putExtra("amount", amountList.get(position));
+                intent.putExtra("UID",UIDs.get(position));
+                intent.putExtra("menteeNames",menteesNamesList.get(position));
+                intent.putExtra("menteeUIDs", menteeUIDsList.get(position));
+                intent.putExtra("amountBreakdown",amountBreakdownList.get(position));
+                startActivity(intent);
             }
         });
 

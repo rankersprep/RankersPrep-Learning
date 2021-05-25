@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/textView2"
@@ -41,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabGravity="fill"
+                android:background="#FFFFFF"
                 app:tabIconTint="#0040FF"
                 app:tabIndicatorColor="#0040FF"
                 app:tabMode="fixed"

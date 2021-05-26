@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rankersprep.rankerspreplearning">
+    package="com.rankersprep.rankerspreplearning" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,10 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        <activity android:name=".PaymentHistoryDetails"
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
+
+        <activity
+            android:name=".PaymentHistoryDetails"
             android:screenOrientation="portrait"
-            android:theme="@style/DemoTheme"/>
+            android:theme="@style/DemoTheme" />
         <activity
             android:name=".ui.notifications.PaymentDetailActivity"
             android:screenOrientation="portrait"
@@ -35,7 +37,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/DemoTheme">
+            android:theme="@style/DemoTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

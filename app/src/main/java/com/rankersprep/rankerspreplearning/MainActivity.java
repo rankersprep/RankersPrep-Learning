@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rankersprep.rankerspreplearning.databinding.ActivityRegisterUserBinding;
 import com.rankersprep.rankerspreplearning.databinding.ActivitySigninBinding;
+//import com.rankersprep.rankerspreplearning.mentorsprofile.ui.MentorActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
                                                             Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                                                             startActivity(intent);
                                                         } else if (role.matches("mentor")) {
-                                                            //Mentor Activity
+//                                                            Intent intent = new Intent(getApplicationContext(), MentorActivity.class);
+//                                                            startActivity(intent);
                                                         }
                                                     }
                                                 });
@@ -182,8 +185,20 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    Intent intent = new Intent(MainActivity.this,AdminActivity.class);
-                    startActivity(intent);
+                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("role").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                        @Override
+                        public void onSuccess(DataSnapshot dataSnapshot) {
+                            String role = dataSnapshot.getValue().toString();
+                            if(role.matches("admin")) {
+                                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                                startActivity(intent);
+                            }else if(role.matches("mentor")){
+//                                Intent intent = new Intent(MainActivity.this,MentorActivity.class);
+//                                startActivity(intent);
+                            }
+                        }
+                    });
+
                 }
             }.start();
         }

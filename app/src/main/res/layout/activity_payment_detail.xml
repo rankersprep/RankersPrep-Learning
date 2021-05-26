@@ -70,7 +70,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
         android:divider="@android:color/transparent"
@@ -80,34 +80,39 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circularImageView"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
+        android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="5dp"
         android:background="@drawable/border_bottom"
-        app:layout_constraintBottom_toTopOf="@+id/totalTV"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mentorPaymentLV" />
 
     <TextView
         android:id="@+id/totalTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:fontFamily="@font/montserrat"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/payNowButton"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/payNowButton"

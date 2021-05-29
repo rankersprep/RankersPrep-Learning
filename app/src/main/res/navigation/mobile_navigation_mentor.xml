@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_mentor"
+    app:startDestination="@+id/navigation_home_mentor">
+
+    <fragment
+        android:id="@+id/navigation_home_mentor"
+        android:name="com.rankersprep.rankerspreplearning.ui.home.HomeFragmentMentor"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home_mentor" />
+
+    <fragment
+        android:id="@+id/navigation_profile_mentor"
+        android:name="com.rankersprep.rankerspreplearning.ui.profile.ProfileFragmentMentor"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_profile_mentor" />
+
+    <fragment
+        android:id="@+id/navigation_notifications_mentor"
+        android:name="com.rankersprep.rankerspreplearning.ui.notifications.NotificationsFragmentMentor"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications_mentor" />
+
+</navigation>

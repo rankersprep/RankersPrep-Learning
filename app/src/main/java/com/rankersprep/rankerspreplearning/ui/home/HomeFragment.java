@@ -22,7 +22,12 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rankersprep.rankerspreplearning.AdminActivity;
 import com.rankersprep.rankerspreplearning.AnnouncementActivity;
 import com.rankersprep.rankerspreplearning.MenteeListFragment;
@@ -35,6 +40,8 @@ import java.util.Objects;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -44,6 +51,20 @@ public class HomeFragment extends Fragment {
         View view = binding.getRoot();
 
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.themeColor));
+
+
+        mAuth = FirebaseAuth.getInstance();
+
+        mDatabase= FirebaseDatabase.getInstance().getReference("users/"+mAuth.getCurrentUser().getUid()+"/name");
+
+        mDatabase.keepSynced(true);
+
+        mDatabase.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                binding.userNameTV.setText("Hello, "+dataSnapshot.getValue().toString().split(" ",3)[0]);
+            }
+        });
 
         binding.createAnAnnouncement.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,7 @@
 package com.rankersprep.rankerspreplearning;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,10 +11,13 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.rankersprep.rankerspreplearning.databinding.ActivityAnnouncementBinding;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -30,15 +35,26 @@ public class AnnouncementActivity extends AppCompatActivity {
         long millis = System.currentTimeMillis();
         if (!title.matches("") && !description.matches("") && !(!b[0] && !b[1])) {
             String key = mDatabase.child("announcements").push().getKey();
-            mDatabase.child("announcements").child(key).child("title").setValue(title);
-            mDatabase.child("announcements").child(key).child("description").setValue(description);
-            mDatabase.child("announcements").child(key).child("urgent").setValue(String.valueOf(urgent));
-            mDatabase.child("announcements").child(key).child("sendToMentors").setValue(String.valueOf(b[0]));
-            mDatabase.child("announcements").child(key).child("sendToMentees").setValue(String.valueOf(b[1]));
-            mDatabase.child("announcements").child(key).child("time").setValue(String.valueOf(millis));
-            Intent intent = new Intent(this, AdminActivity.class);
-            intent.putExtra("showSnackBar",true);
-            startActivity(intent);
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("title",title);
+            map.put("description",description);
+            map.put("urgent",String.valueOf(urgent));
+            map.put("sendToMentors",String.valueOf(b[0]));
+            map.put("sendToMentees",String.valueOf(b[1]));
+            map.put("time",String.valueOf(millis));
+            mDatabase.child("announcements").child(key).updateChildren(map, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable @org.jetbrains.annotations.Nullable DatabaseError error, @NonNull @NotNull DatabaseReference ref) {
+                    if(error==null){
+                        Intent intent = new Intent(AnnouncementActivity.this, AdminActivity.class);
+                        intent.putExtra("showSnackBar",true);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(AnnouncementActivity.this, "Couldn't send Announcement", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }else{
             Toast.makeText(this, "Fill all Fields", Toast.LENGTH_SHORT).show();
         }

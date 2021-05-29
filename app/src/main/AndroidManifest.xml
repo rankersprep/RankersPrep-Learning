@@ -14,6 +14,10 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
 
         <activity
+            android:name=".MentorActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/DemoTheme" />
+        <activity
             android:name=".PaymentHistoryDetails"
             android:screenOrientation="portrait"
             android:theme="@style/DemoTheme" />

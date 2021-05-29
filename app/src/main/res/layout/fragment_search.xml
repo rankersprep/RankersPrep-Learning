@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchFragment">
+
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="35dp"
+        android:background="@drawable/curved_edit_text"
+        android:ems="10"
+        android:fontFamily="@font/montserrat"
+        android:hint="Search"
+        android:inputType="textPersonName|textCapWords"
+        android:paddingLeft="45dp"
+        android:paddingRight="10dp"
+        android:textColor="#0040FF"
+        android:textColorHint="#0040FF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/loupe_1"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/search_icon"
+        app:layout_constraintLeft_toLeftOf="@id/searchEditText"
+        app:layout_constraintTop_toTopOf="@id/searchEditText" />
+
+    <ListView
+        android:id="@+id/mentorViewList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

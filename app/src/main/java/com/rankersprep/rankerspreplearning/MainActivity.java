@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
                                                             Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                                                             startActivity(intent);
                                                         } else if (role.matches("mentor")) {
-//                                                            Intent intent = new Intent(getApplicationContext(), MentorActivity.class);
-//                                                            startActivity(intent);
+                                                            Intent intent = new Intent(getApplicationContext(), MentorActivity.class);
+                                                            startActivity(intent);
                                                         }
                                                     }
                                                 });
@@ -177,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
 
-            CountDownTimer countDownTimer = new CountDownTimer(2000,2500) {
+
+            CountDownTimer countDownTimer = new CountDownTimer(100,100) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
+                    mDatabase.keepSynced(true);
                     mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("role").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                         @Override
                         public void onSuccess(DataSnapshot dataSnapshot) {
@@ -193,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                                 startActivity(intent);
                             }else if(role.matches("mentor")){
-//                                Intent intent = new Intent(MainActivity.this,MentorActivity.class);
-//                                startActivity(intent);
+                                Intent intent = new Intent(MainActivity.this,MentorActivity.class);
+                                startActivity(intent);
                             }
                         }
                     });

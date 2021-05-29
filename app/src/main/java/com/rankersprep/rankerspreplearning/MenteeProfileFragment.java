@@ -1,5 +1,7 @@
 package com.rankersprep.rankerspreplearning;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.rankersprep.rankerspreplearning.databinding.FragmentMenteeProfileBinding;
-import com.rankersprep.rankerspreplearning.databinding.FragmentMentorProfileBinding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -75,6 +76,22 @@ public class MenteeProfileFragment extends Fragment {
                 }else{
                     Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        binding.emailMenteeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"+binding.emailMenteeTextView.getText().toString())));
+            }
+        });
+
+        binding.contactMentee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:+91"+binding.contactMentee.getText().toString()));
+                startActivity(intent);
             }
         });
 

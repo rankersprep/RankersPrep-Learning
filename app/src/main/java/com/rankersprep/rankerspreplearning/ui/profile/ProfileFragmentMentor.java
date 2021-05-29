@@ -1,25 +1,28 @@
-package com.rankersprep.rankerspreplearning;
+package com.rankersprep.rankerspreplearning.ui.profile;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.rankersprep.rankerspreplearning.MainActivity;
+import com.rankersprep.rankerspreplearning.MentorPastPayments;
+import com.rankersprep.rankerspreplearning.R;
 import com.rankersprep.rankerspreplearning.databinding.FragmentProfileBinding;
 import com.rankersprep.rankerspreplearning.databinding.FragmentProfileMentorBinding;
 
@@ -27,17 +30,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 
+public class ProfileFragmentMentor extends Fragment {
 
-public class MentorProfileFragment extends Fragment {
+    private FragmentProfileMentorBinding binding;
 
-    FragmentProfileMentorBinding binding;
-    DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
-    String role;
+    private DatabaseReference mDatabase;
+    static String quote;
 
     public int monthsBetweenDates(Date startDate, Date endDate){
 
@@ -67,34 +69,28 @@ public class MentorProfileFragment extends Fragment {
         return monthsBetween;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.background));
 
-        // Inflate the layout for this fragment
-        binding = FragmentProfileMentorBinding.inflate(inflater,container,false);
+        binding = FragmentProfileMentorBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         root.setSystemUiVisibility(root.getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.keepSynced(true);
         mAuth = FirebaseAuth.getInstance();
-        String UID = getArguments().getString("UID");
+
+        FirebaseDatabase.getInstance().goOnline();
+
+        binding.logOut.setVisibility(View.VISIBLE);
+
+        String UID = mAuth.getCurrentUser().getUid();
         binding.loading1.setVisibility(View.VISIBLE);
 
-        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("role").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(DataSnapshot dataSnapshot) {
-                role = dataSnapshot.getValue().toString();
-                if(!role.matches("admin")){
-                    binding.paymentInfoClickable.setVisibility(View.GONE);
-                }
-            }
-        });
-
-
-
-        mDatabase.child("users").child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        mDatabase.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
@@ -139,7 +135,7 @@ public class MentorProfileFragment extends Fragment {
                 MentorPastPayments nextFrag= new MentorPastPayments();
                 nextFrag.setArguments(bundle);
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
+                transaction.replace(R.id.nav_host_fragment_mentor, nextFrag ); // give your fragment container id in first parameter
                 transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
                 transaction.commit();
             }
@@ -161,6 +157,14 @@ public class MentorProfileFragment extends Fragment {
             }
         });
 
+        binding.logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 

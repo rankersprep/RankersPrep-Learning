@@ -110,7 +110,7 @@ public class ProfileFragmentMentor extends Fragment {
                         Date currentDate = Calendar.getInstance().getTime();
 
                         String months = String.valueOf(monthsBetweenDates(date,currentDate));
-                        binding.months.setText(months+" months");
+                        binding.months.setText(months+"");
 
                     } catch (ParseException e) {
                         e.printStackTrace();

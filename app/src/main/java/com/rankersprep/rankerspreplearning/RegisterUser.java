@@ -58,12 +58,13 @@ public class RegisterUser extends AppCompatActivity {
         String college = binding.collegeNameEditText.getText().toString();
         String language = binding.languagesEditText.getText().toString();
         String password  = binding.passwordEditText.getText().toString();
+        String UPI =  binding.upiEditText.getText().toString();
         Calendar myCalendar = Calendar.getInstance();
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
         String date = sdf.format(myCalendar.getTime());
 
-        if(!name.matches("") && !email.matches("") && !(expertIn ==null) && !contact.matches("") && !AIR.matches("") && !college.matches("") && !language.matches("")  && contact.length()==10){
+        if(!name.matches("") && !email.matches("") && !(expertIn ==null) && !contact.matches("") && !AIR.matches("") && !college.matches("") && !language.matches("")  && contact.length()==10 && !UPI.matches("")){
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -87,6 +88,8 @@ public class RegisterUser extends AppCompatActivity {
                                 mDatabase.child("users").child(userId).child("role").setValue("mentor");
                                 mDatabase.child("users").child(userId).child("expertIn").setValue(expertIn);
                                 mDatabase.child("users").child(userId).child("joinedOn").setValue(date);
+                                mDatabase.child("users").child(userId).child("upi").setValue(UPI);
+                                mDatabase.child("users").child(userId).child("quote").setValue("It's our choices that say who we truly are, far more than our abilities");
 
                                 FirebaseAuth.getInstance().signOut();
 

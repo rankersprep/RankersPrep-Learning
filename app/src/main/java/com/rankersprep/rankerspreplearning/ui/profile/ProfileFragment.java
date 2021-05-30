@@ -54,17 +54,23 @@ public class ProfileFragment extends Fragment {
 
         FirebaseDatabase.getInstance().goOnline();
 
-        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("quote").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()) {
-                    quote = task.getResult().getValue().toString();
-                    binding.loremIpsum.setText(quote);
-                }else{
-                    Log.i("error",task.getException().getMessage());
+
+            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("quote").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        try {
+                            quote = task.getResult().getValue().toString();
+                        }catch (Exception e){
+                            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("quote").setValue(binding.loremIpsum.getText().toString());
+                        }
+                        binding.loremIpsum.setText(quote);
+                    } else {
+                        Log.i("error", task.getException().getMessage());
+                    }
                 }
-            }
-        });
+            });
+
 
         binding.gmail.setOnClickListener(new View.OnClickListener() {
             @Override

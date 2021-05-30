@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -29,7 +32,11 @@ import java.util.Date;
 public class MenteeProfileFragment extends Fragment {
 
    FragmentMenteeProfileBinding binding;
-   DatabaseReference mDatabase;
+   DatabaseReference mDatabase,databaseReference;
+   private FirebaseAuth mAuth;
+
+   String mentorUID;
+   String role;
 
    public String changeDateForm(String date){
        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
@@ -50,6 +57,8 @@ public class MenteeProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.background));
 
+        mAuth = FirebaseAuth.getInstance();
+
         // Inflate the layout for this fragment
         binding = FragmentMenteeProfileBinding.inflate(inflater,container,false);
         View root = binding.getRoot();
@@ -57,6 +66,9 @@ public class MenteeProfileFragment extends Fragment {
 
         String UID = getArguments().getString("UID");
         mDatabase = FirebaseDatabase.getInstance().getReference("mentees/"+UID);
+        databaseReference = FirebaseDatabase.getInstance().getReference("users/"+mAuth.getCurrentUser().getUid()+"/role");
+        mDatabase.keepSynced(true);
+        databaseReference.keepSynced(true);
         binding.loading4.setVisibility(View.VISIBLE);
 
         mDatabase.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -70,14 +82,24 @@ public class MenteeProfileFragment extends Fragment {
                     binding.emailMenteeTextView.setText(snapshot.child("email").getValue().toString());
                     binding.contactMentee.setText(snapshot.child("contact").getValue().toString());
                     binding.mentorNameTV.setText(snapshot.child("mentor").getValue().toString());
-                    binding.planDates.setText(changeDateForm(snapshot.child("startDate").getValue().toString())+" to "+changeDateForm(snapshot.child("endDate").getValue().toString()));
+                    binding.planDateStart.setText(changeDateForm(snapshot.child("startDate").getValue().toString()));
+                    binding.planDateEnd.setText(changeDateForm(snapshot.child("endDate").getValue().toString()));
                     binding.note.setText(snapshot.child("note").getValue().toString());
+                    mentorUID = snapshot.child("mentorUID").getValue().toString();
                     binding.loading4.setVisibility(View.INVISIBLE);
                 }else{
                     Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        databaseReference.get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(DataSnapshot dataSnapshot) {
+                role = dataSnapshot.getValue().toString();
+            }
+        });
+
+
 
         binding.emailMenteeTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +116,27 @@ public class MenteeProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        binding.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("UID", mentorUID);
+
+                MentorProfileFragment nextFrag= new MentorProfileFragment();
+                nextFrag.setArguments(bundle);
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                if(role.matches("admin")) {
+                    transaction.replace(R.id.nav_host_fragment, nextFrag); // give your fragment container id in first parameter
+                } else if (role.matches("mentor")) {
+                    transaction.replace(R.id.nav_host_fragment_mentor, nextFrag);
+                }
+                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                transaction.commit();
+            }
+        });
+
+
 
         return root;
     }

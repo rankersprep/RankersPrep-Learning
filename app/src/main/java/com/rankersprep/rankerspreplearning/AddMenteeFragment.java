@@ -27,9 +27,11 @@ import com.rankersprep.rankerspreplearning.databinding.FragmentProfileBinding;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -40,8 +42,31 @@ public class AddMenteeFragment extends Fragment {
     ArrayList<String> mentorNames,mentorUIDs;
     String slot;
     String months;
-    int startMonth,endMonth;
+    int startMonth,endMonth,monthsDone;
     String nextPaymentMonth;
+
+
+
+    int numberOfMonthsDone(int nextDate, String nextMonth, int year,int c) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        Calendar current = Calendar.getInstance();
+        current.set(year,Integer.parseInt(nextMonth),nextDate);
+
+        Date nextDateDate = current.getTime();
+        Date currentDate = Calendar.getInstance().getTime();
+        nextMonth=String.valueOf(Integer.parseInt(nextMonth)+1);
+        if(Integer.parseInt(nextMonth)>12){
+            year++;
+            nextMonth="1";
+        }
+
+        if(currentDate.after(nextDateDate)){
+            return numberOfMonthsDone(nextDate,nextMonth,year,++c);
+        }else{
+            return c;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,10 +123,17 @@ public class AddMenteeFragment extends Fragment {
         int month = cldr.get(Calendar.MONTH);
         int year = cldr.get(Calendar.YEAR);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mentorNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mentorNames);
         AutoCompleteTextView autoCompleteTextView = binding.mentorAssignedEditText;
         autoCompleteTextView.setAdapter(arrayAdapter);
 
+        ArrayList<String> planNames= new ArrayList<>();
+        planNames.add("Sugamya");
+        planNames.add("Subodh");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,planNames);
+        AutoCompleteTextView autoCompleteTextView1 = binding.planNameEditText;
+        autoCompleteTextView1.setAdapter(adapter);
 
         binding.calendarStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,13 +149,32 @@ public class AddMenteeFragment extends Fragment {
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
                         binding.startDate.setText(sdf.format(myCalendar.getTime()));
+
+
+                        int nextPaymentDate;
                         if(dayOfMonth<16){
                             slot = "2";
-                            nextPaymentMonth = String.valueOf(month+2);
+                            nextPaymentDate=16;
+                            if(month<11) {
+                                nextPaymentMonth = String.valueOf(month + 2);
+                            }else{
+                                nextPaymentMonth = String.valueOf(month -12 + 2);
+                                year++;
+                            }
                         }else{
                             slot="1";
-                            nextPaymentMonth = String.valueOf(month+3);
+                            nextPaymentDate=1;
+                            if(month<10){
+                                nextPaymentMonth = String.valueOf(month+3);
+                            }else{
+                                nextPaymentMonth = String.valueOf(month-12+3);
+                                year++;
+                            }
+
                         }
+
+                        monthsDone=numberOfMonthsDone(nextPaymentDate,nextPaymentMonth,year,0);
+
                         startMonth=myCalendar.get(Calendar.MONTH)+1;
                     }
                 },year,month,day);
@@ -166,11 +217,15 @@ public class AddMenteeFragment extends Fragment {
                 salary = binding.salaryEditText.getText().toString();
                 note = binding.noteEditText.getText().toString();
                 if(!name.matches("") && !email.matches("") && contact.length()==10 && !plan.matches("") && !exam.matches("") && !startDate.matches("") && !endDate.matches("") && !mentor.matches("") && !salary.matches("")  && !note.matches("")){
+
                     if(endMonth-startMonth!=0){
-                        months = String.valueOf(endMonth-startMonth);
+                        months = String.valueOf(endMonth-startMonth-monthsDone);
                     }else{
                         months = "1";
                     }
+
+                    nextPaymentMonth = String.valueOf(Integer.parseInt(nextPaymentMonth)+monthsDone);
+
                     HashMap<String,Object> map = new HashMap<>();
                     map.put("name",name);
                     map.put("email",email);
@@ -193,6 +248,8 @@ public class AddMenteeFragment extends Fragment {
                     map1.put("salary",salary);
                     map1.put("slot",slot);
                     map1.put("monthsRemaining",months);
+                    map1.put("plan",plan);
+                    map1.put("exam",exam);
                     map1.put("startDate", startDate);
                     map1.put("nextPaymentMonth",nextPaymentMonth);
                     map1.put("startMonth",String.valueOf(startMonth));
@@ -217,5 +274,34 @@ public class AddMenteeFragment extends Fragment {
         });
 
         return root;
+    }
+
+
+    public int monthsBetweenDates(Date startDate, Date endDate){
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
+        int monthsBetween = 0;
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
+
+        if(dateDiff<0) {
+            int borrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH)+borrow)-start.get(Calendar.DAY_OF_MONTH);
+            monthsBetween--;
+
+            if(dateDiff>0) {
+                monthsBetween++;
+            }
+        }
+        else {
+            monthsBetween++;
+        }
+        monthsBetween += end.get(Calendar.MONTH)-start.get(Calendar.MONTH);
+        monthsBetween  += (end.get(Calendar.YEAR)-start.get(Calendar.YEAR))*12;
+        return monthsBetween;
     }
 }

@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             binding.CL1.setVisibility(View.INVISIBLE);
             binding.loading.setVisibility(View.VISIBLE);
+
+
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -135,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             binding.loading.setVisibility(View.INVISIBLE);
         }
 
-
     }
 
     @Override
@@ -173,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseDatabase.getInstance().goOnline();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){

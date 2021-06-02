@@ -93,7 +93,6 @@ public class MentorProfileFragment extends Fragment {
         });
 
 
-
         mDatabase.child("users").child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
@@ -160,9 +159,6 @@ public class MentorProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
-
 
         return root;
     }

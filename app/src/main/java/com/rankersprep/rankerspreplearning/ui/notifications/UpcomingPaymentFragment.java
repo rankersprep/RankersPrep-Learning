@@ -135,7 +135,11 @@ public class UpcomingPaymentFragment extends Fragment {
             slot="1";
             slot2="2";
             calendar.set(Calendar.DAY_OF_MONTH,1);
-            calendar.set(Calendar.MONTH,calendar.get(Calendar.MONTH)+1);
+            if(date==1){
+                calendar.set(Calendar.MONTH,calendar.get(Calendar.MONTH));
+            }else {
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
+            }
             currentMonth = calendar.get(Calendar.MONTH);
             String myFormat = "MMMM dd"; //In which you need put here
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat);

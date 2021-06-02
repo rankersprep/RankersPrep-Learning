@@ -88,11 +88,12 @@ public class MenteeListFragment extends Fragment {
                 exam.add(snapshot.child("exam").getValue().toString());
                 mentorName.add("Mentor: "+snapshot.child("mentor").getValue().toString());
                 String endDate = snapshot.child("endDate").getValue().toString();
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy");
                 try {
-                    Date date = format.parse(endDate);
                     Date currentDate = Calendar.getInstance().getTime();
-                    if(date.after(currentDate)){
+                    Date date = format.parse(endDate);
+
+                    if(currentDate.after(date)){
                         Log.i("date",date.toString()+currentDate.toString());
                         approvals.add("pending");
                     }else{

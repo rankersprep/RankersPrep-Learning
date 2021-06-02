@@ -69,7 +69,7 @@ public class MentorListFragment extends Fragment {
 
 
 
-        mDatabase.child("users").addChildEventListener(new ChildEventListener() {
+        mDatabase.child("users").orderByChild("name").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
                 uids.add(snapshot.getKey());

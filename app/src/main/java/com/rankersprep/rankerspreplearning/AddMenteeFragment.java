@@ -45,13 +45,50 @@ public class AddMenteeFragment extends Fragment {
     int startMonth,endMonth,monthsDone;
     String nextPaymentMonth;
 
+    public int monthsBetweenDates(String start1,String end11) throws ParseException {
+
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
+        Date startDate; Date endDate ;
+
+        startDate = sdf.parse(start1);
+        endDate = sdf.parse(end11);
+
+        Calendar start = Calendar.getInstance();
+        start.setTime(startDate);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endDate);
+
+        int monthsBetween = 0;
+        int dateDiff = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
+
+        if(dateDiff<0) {
+            int borrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
+            dateDiff = (end.get(Calendar.DAY_OF_MONTH)+borrow)-start.get(Calendar.DAY_OF_MONTH);
+            monthsBetween--;
+
+            if(dateDiff>0) {
+                monthsBetween++;
+            }
+        }
+        else if(dateDiff>0) {
+            monthsBetween++;
+        }
+        monthsBetween += end.get(Calendar.MONTH)-start.get(Calendar.MONTH);
+        monthsBetween  += (end.get(Calendar.YEAR)-start.get(Calendar.YEAR))*12;
+
+        Log.i("monthsBetween", String.valueOf(monthsBetween));
+        return monthsBetween;
+    }
+
 
 
     int numberOfMonthsDone(int nextDate, String nextMonth, int year,int c) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         Calendar current = Calendar.getInstance();
-        current.set(year,Integer.parseInt(nextMonth),nextDate);
+        current.set(year,Integer.parseInt(nextMonth)-1,nextDate);
 
         Date nextDateDate = current.getTime();
         Date currentDate = Calendar.getInstance().getTime();
@@ -64,6 +101,7 @@ public class AddMenteeFragment extends Fragment {
         if(currentDate.after(nextDateDate)){
             return numberOfMonthsDone(nextDate,nextMonth,year,++c);
         }else{
+            Log.i("check", String.valueOf(c));
             return c;
         }
     }
@@ -144,7 +182,6 @@ public class AddMenteeFragment extends Fragment {
                         Calendar myCalendar = Calendar.getInstance();
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, month);
-                        Log.i("Month", String.valueOf(month));
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         String myFormat = "dd/MM/yy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat);
@@ -172,6 +209,8 @@ public class AddMenteeFragment extends Fragment {
                             }
 
                         }
+
+                        Log.i("nextMonth", nextPaymentMonth);
 
                         monthsDone=numberOfMonthsDone(nextPaymentDate,nextPaymentMonth,year,0);
 
@@ -219,12 +258,21 @@ public class AddMenteeFragment extends Fragment {
                 if(!name.matches("") && !email.matches("") && contact.length()==10 && !plan.matches("") && !exam.matches("") && !startDate.matches("") && !endDate.matches("") && !mentor.matches("") && !salary.matches("")  && !note.matches("")){
 
                     if(endMonth-startMonth!=0){
-                        months = String.valueOf(endMonth-startMonth-monthsDone);
+                        try {
+                            months = String.valueOf(monthsBetweenDates(startDate,endDate)-monthsDone);
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }else{
                         months = "1";
                     }
 
-                    nextPaymentMonth = String.valueOf(Integer.parseInt(nextPaymentMonth)+monthsDone);
+                    int a =Integer.parseInt(nextPaymentMonth)+monthsDone;
+                    if(a>12){
+                        a-=12;
+                    }
+                    nextPaymentMonth = String.valueOf(a);
 
                     HashMap<String,Object> map = new HashMap<>();
                     map.put("name",name);
@@ -258,12 +306,12 @@ public class AddMenteeFragment extends Fragment {
                     mDatabase.child("mentees").child(menteeUID).updateChildren(map, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable @org.jetbrains.annotations.Nullable DatabaseError error, @NonNull @NotNull DatabaseReference ref) {
-                            Toast.makeText(getActivity(), "Mentee Added", Toast.LENGTH_SHORT).show();
-                            MenteeListFragment nextFrag= new MenteeListFragment();
-                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
-                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                            transaction.commit();
+//                            Toast.makeText(getActivity(), "Mentee Added", Toast.LENGTH_SHORT).show();
+//                            MenteeListFragment nextFrag= new MenteeListFragment();
+//                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//                            transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
+//                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+//                            transaction.commit();
                         }
                     });
 
@@ -277,31 +325,5 @@ public class AddMenteeFragment extends Fragment {
     }
 
 
-    public int monthsBetweenDates(Date startDate, Date endDate){
 
-        Calendar start = Calendar.getInstance();
-        start.setTime(startDate);
-
-        Calendar end = Calendar.getInstance();
-        end.setTime(endDate);
-
-        int monthsBetween = 0;
-        int dateDiff = end.get(Calendar.DAY_OF_MONTH)-start.get(Calendar.DAY_OF_MONTH);
-
-        if(dateDiff<0) {
-            int borrow = end.getActualMaximum(Calendar.DAY_OF_MONTH);
-            dateDiff = (end.get(Calendar.DAY_OF_MONTH)+borrow)-start.get(Calendar.DAY_OF_MONTH);
-            monthsBetween--;
-
-            if(dateDiff>0) {
-                monthsBetween++;
-            }
-        }
-        else {
-            monthsBetween++;
-        }
-        monthsBetween += end.get(Calendar.MONTH)-start.get(Calendar.MONTH);
-        monthsBetween  += (end.get(Calendar.YEAR)-start.get(Calendar.YEAR))*12;
-        return monthsBetween;
-    }
 }

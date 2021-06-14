@@ -306,12 +306,12 @@ public class AddMenteeFragment extends Fragment {
                     mDatabase.child("mentees").child(menteeUID).updateChildren(map, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(@Nullable @org.jetbrains.annotations.Nullable DatabaseError error, @NonNull @NotNull DatabaseReference ref) {
-//                            Toast.makeText(getActivity(), "Mentee Added", Toast.LENGTH_SHORT).show();
-//                            MenteeListFragment nextFrag= new MenteeListFragment();
-//                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                            transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
-//                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-//                            transaction.commit();
+                            Toast.makeText(getActivity(), "Mentee Added", Toast.LENGTH_SHORT).show();
+                            MenteeListFragment nextFrag= new MenteeListFragment();
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.nav_host_fragment, nextFrag ); // give your fragment container id in first parameter
+                            transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                            transaction.commit();
                         }
                     });
 

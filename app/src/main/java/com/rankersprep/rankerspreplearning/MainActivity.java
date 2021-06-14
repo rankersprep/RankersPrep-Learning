@@ -176,36 +176,24 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseDatabase.getInstance().goOnline();
+        mDatabase.keepSynced(true);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-
-
-            CountDownTimer countDownTimer = new CountDownTimer(100,100) {
+            mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("role").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                 @Override
-                public void onTick(long millisUntilFinished) {
-
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    String role = dataSnapshot.getValue().toString();
+                    if(role.matches("admin")) {
+                        Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                        startActivity(intent);
+                    }else if(role.matches("mentor")){
+                        Intent intent = new Intent(MainActivity.this,MentorActivity.class);
+                        startActivity(intent);
+                    }
                 }
-
-                @Override
-                public void onFinish() {
-                    mDatabase.keepSynced(true);
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("role").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-                        @Override
-                        public void onSuccess(DataSnapshot dataSnapshot) {
-                            String role = dataSnapshot.getValue().toString();
-                            if(role.matches("admin")) {
-                                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                                startActivity(intent);
-                            }else if(role.matches("mentor")){
-                                Intent intent = new Intent(MainActivity.this,MentorActivity.class);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-
-                }
-            }.start();
+            });
+            
         }
 
         binding.showPass.setOnClickListener(new View.OnClickListener() {

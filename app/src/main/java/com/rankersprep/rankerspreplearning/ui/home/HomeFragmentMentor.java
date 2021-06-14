@@ -185,8 +185,7 @@ public class HomeFragmentMentor extends Fragment {
                     c++;
                     if(c!=0) {
                         binding.noOfAnnouncements.setText(String.valueOf(c));
-                    }else{
-                        binding.noOfAnnouncements.setVisibility(View.INVISIBLE);
+                        binding.noOfAnnouncements.setVisibility(View.VISIBLE);
                     }
                 }
             }
